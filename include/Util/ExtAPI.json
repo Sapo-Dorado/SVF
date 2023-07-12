@@ -3270,5 +3270,10 @@
         "type": "CPP_EFT_DYNAMIC_CAST",
         "overwrite_app_function": 0,
         "copy": ["A0", "L"]
+    },
+    "alloc_self":   {
+        "type": "EFT_ALLOC",
+        "overwrite_app_function": 1,
+        "addr": ["L", "L"]
     }
 }
