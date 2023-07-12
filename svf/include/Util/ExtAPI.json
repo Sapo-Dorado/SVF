@@ -5829,5 +5829,15 @@
                 "dst": "swap_Arg1"
             }
         }
+    },
+    "alloc_mem":{
+        "return":  "%self addrspace(1)*",
+        "arguments":  "()",
+        "type": "EFT_ALLOC",
+        "overwrite_app_function": 1,
+        "AddrStmt": {
+            "src": "Obj",
+            "dst": "Ret"
+        }
     }
 }
