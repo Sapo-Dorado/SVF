@@ -836,7 +836,19 @@ void SVFIRBuilder::visitReturnInst(ReturnInst &inst)
 void SVFIRBuilder::visitExtractValueInst(ExtractValueInst  &inst)
 {
     NodeID dst = getValueNode(&inst);
-    addBlackHoleAddrEdge(dst);
+    NodeID src = getValueNode(inst.getOperand(0));
+    addCopyEdge(src, dst);
+}
+
+void SVFIRBuilder::visitInsertValueInst(InsertValueInst  &inst)
+{
+    NodeID result = getValueNode(&inst);
+    NodeID structVal = getValueNode(inst.getOperand(0));
+    NodeID field = getValueNode(inst.getOperand(1));
+
+    // Hack to create value dependency of inserted values on resulting struct
+    addCmpEdge(structVal, field, result, 0);
+
 }
 
 /*!

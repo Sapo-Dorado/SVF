@@ -142,10 +142,7 @@ public:
     void visitExtractValueInst(ExtractValueInst  &EVI);
     void visitBranchInst(BranchInst &I);
     void visitSwitchInst(SwitchInst &I);
-    void visitInsertValueInst(InsertValueInst &I)
-    {
-        addBlackHoleAddrEdge(getValueNode(&I));
-    }
+    void visitInsertValueInst(InsertValueInst &I);
     // TerminatorInst and UnwindInst have been removed since llvm-8.0.0
     // void visitTerminatorInst(TerminatorInst &TI) {}
     // void visitUnwindInst(UnwindInst &I) { /*returns void*/}
