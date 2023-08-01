@@ -843,11 +843,19 @@ void SVFIRBuilder::visitExtractValueInst(ExtractValueInst  &inst)
 void SVFIRBuilder::visitInsertValueInst(InsertValueInst  &inst)
 {
     NodeID result = getValueNode(&inst);
-    NodeID structVal = getValueNode(inst.getOperand(0));
     NodeID field = getValueNode(inst.getOperand(1));
 
-    // Hack to create value dependency of inserted values on resulting struct
-    addCmpEdge(structVal, field, result, 0);
+
+    // If struct is undef, only create dependency on inserted value
+    if (llvm::dyn_cast<UndefValue>(inst.getOperand(0))) {
+        addCopyEdge(field, result);
+    } else {
+        NodeID structVal = getValueNode(inst.getOperand(0));
+
+        // Hack to create value dependency of inserted values on resulting struct
+        addBinaryOPEdge(structVal, field, result, 0);
+    }
+
 
 }
 
