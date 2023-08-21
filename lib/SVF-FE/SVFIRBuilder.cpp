@@ -846,8 +846,8 @@ void SVFIRBuilder::visitInsertValueInst(InsertValueInst  &inst)
     NodeID field = getValueNode(inst.getOperand(1));
 
 
-    // If struct is undef, only create dependency on inserted value
-    if (llvm::dyn_cast<UndefValue>(inst.getOperand(0))) {
+    // If struct is zeroinitializer, only create dependency on inserted value
+    if (llvm::dyn_cast<ConstantAggregateZero>(inst.getOperand(0))) {
         addCopyEdge(field, result);
     } else {
         NodeID structVal = getValueNode(inst.getOperand(0));
