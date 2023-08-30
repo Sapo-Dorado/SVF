@@ -843,6 +843,13 @@ void SVFIRBuilder::visitExtractValueInst(ExtractValueInst  &inst)
 void SVFIRBuilder::visitInsertValueInst(InsertValueInst  &inst)
 {
     NodeID result = getValueNode(&inst);
+
+    // Don't try to call getValueNode on constants
+    if (llvm::dyn_cast<Constant>(inst.getOperand(1))) {
+        addBlackHoleAddrEdge(result);
+        return;
+    }
+
     NodeID field = getValueNode(inst.getOperand(1));
 
 
