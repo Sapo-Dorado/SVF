@@ -843,14 +843,16 @@ void SVFIRBuilder::visitExtractValueInst(ExtractValueInst  &inst)
 void SVFIRBuilder::visitInsertValueInst(InsertValueInst  &inst)
 {
     NodeID result = getValueNode(&inst);
-
+    NodeID field;
     // Don't try to call getValueNode on constants
+    // We should add support for this when we have field sensitive analysis
     if (llvm::dyn_cast<Constant>(inst.getOperand(1))) {
-        addBlackHoleAddrEdge(result);
-        return;
+        field = pag->addDummyValNode();
+        addBlackHoleAddrEdge(field);
+    } else {
+        field = getValueNode(inst.getOperand(1));
     }
 
-    NodeID field = getValueNode(inst.getOperand(1));
 
 
     // If struct is zeroinitializer, only create dependency on inserted value
